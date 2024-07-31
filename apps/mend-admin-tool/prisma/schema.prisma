@@ -1,0 +1,46 @@
+datasource db {
+  provider = "sqlserver"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  createdAt DateTime @default(now())
+  email     String?  @unique
+  firstName String?
+  id        String   @id @default(cuid())
+  lastName  String?
+  password  String
+  roles     Role[]
+  updatedAt DateTime @updatedAt
+  username  String   @unique
+}
+
+model Role {
+  createdAt   DateTime     @default(now())
+  id          String       @id @default(cuid())
+  name        String?
+  permission  Permission[]
+  updatedAt   DateTime     @updatedAt
+  userRoles   User?        @relation(fields: [userRolesId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  userRolesId String?
+}
+
+model Permission {
+  clinicIds        String?
+  createdAt        DateTime @default(now())
+  id               String   @id @default(cuid())
+  rolePermission   Role?    @relation(fields: [rolePermissionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  rolePermissionId String?
+  updatedAt        DateTime @updatedAt
+}
+
+model Clinic {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  name      String
+  updatedAt DateTime @updatedAt
+}
