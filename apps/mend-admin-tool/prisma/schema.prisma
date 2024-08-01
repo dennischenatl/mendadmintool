@@ -7,10 +7,8 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model UserProfile {
+model TestEntity {
   createdAt DateTime @default(now())
-  firstName String?
   id        String   @id @default(cuid())
-  lastName  String?
   updatedAt DateTime @updatedAt
 }
