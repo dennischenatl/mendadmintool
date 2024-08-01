@@ -11,14 +11,10 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import {
-  IsString,
-  IsOptional,
-  MaxLength,
-  ValidateNested,
-} from "class-validator";
-import { RoleUpdateManyWithoutUsersInput } from "./RoleUpdateManyWithoutUsersInput";
-import { Type } from "class-transformer";
+import { IsString, IsOptional, MaxLength } from "class-validator";
+import { IsJSONValue } from "../../validators";
+import { GraphQLJSON } from "graphql-type-json";
+import { InputJsonValue } from "../../types";
 
 @InputType()
 class UserUpdateInput {
@@ -70,15 +66,13 @@ class UserUpdateInput {
 
   @ApiProperty({
     required: false,
-    type: () => RoleUpdateManyWithoutUsersInput,
   })
-  @ValidateNested()
-  @Type(() => RoleUpdateManyWithoutUsersInput)
+  @IsJSONValue()
   @IsOptional()
-  @Field(() => RoleUpdateManyWithoutUsersInput, {
+  @Field(() => GraphQLJSON, {
     nullable: true,
   })
-  roles?: RoleUpdateManyWithoutUsersInput;
+  roles?: InputJsonValue;
 
   @ApiProperty({
     required: false,

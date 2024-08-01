@@ -26,9 +26,6 @@ import { User } from "./User";
 import { UserFindManyArgs } from "./UserFindManyArgs";
 import { UserWhereUniqueInput } from "./UserWhereUniqueInput";
 import { UserUpdateInput } from "./UserUpdateInput";
-import { RoleFindManyArgs } from "../../role/base/RoleFindManyArgs";
-import { Role } from "../../role/base/Role";
-import { RoleWhereUniqueInput } from "../../role/base/RoleWhereUniqueInput";
 
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
@@ -57,6 +54,7 @@ export class UserControllerBase {
         firstName: true,
         id: true,
         lastName: true,
+        roles: true,
         updatedAt: true,
         username: true,
       },
@@ -85,6 +83,7 @@ export class UserControllerBase {
         firstName: true,
         id: true,
         lastName: true,
+        roles: true,
         updatedAt: true,
         username: true,
       },
@@ -114,6 +113,7 @@ export class UserControllerBase {
         firstName: true,
         id: true,
         lastName: true,
+        roles: true,
         updatedAt: true,
         username: true,
       },
@@ -152,6 +152,7 @@ export class UserControllerBase {
           firstName: true,
           id: true,
           lastName: true,
+          roles: true,
           updatedAt: true,
           username: true,
         },
@@ -189,6 +190,7 @@ export class UserControllerBase {
           firstName: true,
           id: true,
           lastName: true,
+          roles: true,
           updatedAt: true,
           username: true,
         },
@@ -201,107 +203,5 @@ export class UserControllerBase {
       }
       throw error;
     }
-  }
-
-  @common.UseInterceptors(AclFilterResponseInterceptor)
-  @common.Get("/:id/roles")
-  @ApiNestedQuery(RoleFindManyArgs)
-  @nestAccessControl.UseRoles({
-    resource: "Role",
-    action: "read",
-    possession: "any",
-  })
-  async findRoles(
-    @common.Req() request: Request,
-    @common.Param() params: UserWhereUniqueInput
-  ): Promise<Role[]> {
-    const query = plainToClass(RoleFindManyArgs, request.query);
-    const results = await this.service.findRoles(params.id, {
-      ...query,
-      select: {
-        createdAt: true,
-        id: true,
-        name: true,
-        updatedAt: true,
-
-        userRoles: {
-          select: {
-            id: true,
-          },
-        },
-      },
-    });
-    if (results === null) {
-      throw new errors.NotFoundException(
-        `No resource was found for ${JSON.stringify(params)}`
-      );
-    }
-    return results;
-  }
-
-  @common.Post("/:id/roles")
-  @nestAccessControl.UseRoles({
-    resource: "User",
-    action: "update",
-    possession: "any",
-  })
-  async connectRoles(
-    @common.Param() params: UserWhereUniqueInput,
-    @common.Body() body: RoleWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      roles: {
-        connect: body,
-      },
-    };
-    await this.service.updateUser({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.Patch("/:id/roles")
-  @nestAccessControl.UseRoles({
-    resource: "User",
-    action: "update",
-    possession: "any",
-  })
-  async updateRoles(
-    @common.Param() params: UserWhereUniqueInput,
-    @common.Body() body: RoleWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      roles: {
-        set: body,
-      },
-    };
-    await this.service.updateUser({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.Delete("/:id/roles")
-  @nestAccessControl.UseRoles({
-    resource: "User",
-    action: "update",
-    possession: "any",
-  })
-  async disconnectRoles(
-    @common.Param() params: UserWhereUniqueInput,
-    @common.Body() body: RoleWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      roles: {
-        disconnect: body,
-      },
-    };
-    await this.service.updateUser({
-      where: params,
-      data,
-      select: { id: true },
-    });
   }
 }
