@@ -5,10 +5,10 @@ import { theme } from "./theme/theme";
 import Login from "./Login";
 import "./App.scss";
 import Dashboard from "./pages/Dashboard";
-import { UserProfileList } from "./userProfile/UserProfileList";
-import { UserProfileCreate } from "./userProfile/UserProfileCreate";
-import { UserProfileEdit } from "./userProfile/UserProfileEdit";
-import { UserProfileShow } from "./userProfile/UserProfileShow";
+import { TestEntityList } from "./testEntity/TestEntityList";
+import { TestEntityCreate } from "./testEntity/TestEntityCreate";
+import { TestEntityEdit } from "./testEntity/TestEntityEdit";
+import { TestEntityShow } from "./testEntity/TestEntityShow";
 import { jwtAuthProvider } from "./auth-provider/ra-auth-jwt";
 
 const App = (): React.ReactElement => {
@@ -28,7 +28,7 @@ const App = (): React.ReactElement => {
   return (
     <div className="App">
       <Admin
-        title={"Mend Admin Tool-1"}
+        title={"mend admin tool-1"}
         dataProvider={dataProvider}
         authProvider={jwtAuthProvider}
         theme={theme}
@@ -36,11 +36,11 @@ const App = (): React.ReactElement => {
         loginPage={Login}
       >
         <Resource
-          name="UserProfile"
-          list={UserProfileList}
-          edit={UserProfileEdit}
-          create={UserProfileCreate}
-          show={UserProfileShow}
+          name="TestEntity"
+          list={TestEntityList}
+          edit={TestEntityEdit}
+          create={TestEntityCreate}
+          show={TestEntityShow}
         />
       </Admin>
     </div>
