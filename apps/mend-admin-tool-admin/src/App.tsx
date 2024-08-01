@@ -9,18 +9,6 @@ import { UserList } from "./user/UserList";
 import { UserCreate } from "./user/UserCreate";
 import { UserEdit } from "./user/UserEdit";
 import { UserShow } from "./user/UserShow";
-import { RoleList } from "./role/RoleList";
-import { RoleCreate } from "./role/RoleCreate";
-import { RoleEdit } from "./role/RoleEdit";
-import { RoleShow } from "./role/RoleShow";
-import { PermissionList } from "./permission/PermissionList";
-import { PermissionCreate } from "./permission/PermissionCreate";
-import { PermissionEdit } from "./permission/PermissionEdit";
-import { PermissionShow } from "./permission/PermissionShow";
-import { ClinicList } from "./clinic/ClinicList";
-import { ClinicCreate } from "./clinic/ClinicCreate";
-import { ClinicEdit } from "./clinic/ClinicEdit";
-import { ClinicShow } from "./clinic/ClinicShow";
 import { jwtAuthProvider } from "./auth-provider/ra-auth-jwt";
 
 const App = (): React.ReactElement => {
@@ -53,27 +41,6 @@ const App = (): React.ReactElement => {
           edit={UserEdit}
           create={UserCreate}
           show={UserShow}
-        />
-        <Resource
-          name="Role"
-          list={RoleList}
-          edit={RoleEdit}
-          create={RoleCreate}
-          show={RoleShow}
-        />
-        <Resource
-          name="Permission"
-          list={PermissionList}
-          edit={PermissionEdit}
-          create={PermissionCreate}
-          show={PermissionShow}
-        />
-        <Resource
-          name="Clinic"
-          list={ClinicList}
-          edit={ClinicEdit}
-          create={ClinicCreate}
-          show={ClinicShow}
         />
       </Admin>
     </div>
