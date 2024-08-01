@@ -5,10 +5,10 @@ import { theme } from "./theme/theme";
 import Login from "./Login";
 import "./App.scss";
 import Dashboard from "./pages/Dashboard";
-import { UserList } from "./user/UserList";
-import { UserCreate } from "./user/UserCreate";
-import { UserEdit } from "./user/UserEdit";
-import { UserShow } from "./user/UserShow";
+import { UserProfileList } from "./userProfile/UserProfileList";
+import { UserProfileCreate } from "./userProfile/UserProfileCreate";
+import { UserProfileEdit } from "./userProfile/UserProfileEdit";
+import { UserProfileShow } from "./userProfile/UserProfileShow";
 import { jwtAuthProvider } from "./auth-provider/ra-auth-jwt";
 
 const App = (): React.ReactElement => {
@@ -36,11 +36,11 @@ const App = (): React.ReactElement => {
         loginPage={Login}
       >
         <Resource
-          name="User"
-          list={UserList}
-          edit={UserEdit}
-          create={UserCreate}
-          show={UserShow}
+          name="UserProfile"
+          list={UserProfileList}
+          edit={UserProfileEdit}
+          create={UserProfileCreate}
+          show={UserProfileShow}
         />
       </Admin>
     </div>
