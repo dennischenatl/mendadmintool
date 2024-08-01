@@ -7,13 +7,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model User {
+model UserProfile {
   createdAt DateTime @default(now())
-  email     String?  @unique
   firstName String?
   id        String   @id @default(cuid())
   lastName  String?
-  password  String
   updatedAt DateTime @updatedAt
-  username  String   @unique
 }
