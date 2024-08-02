@@ -26,6 +26,12 @@ import { User } from "./User";
 import { UserFindManyArgs } from "./UserFindManyArgs";
 import { UserWhereUniqueInput } from "./UserWhereUniqueInput";
 import { UserUpdateInput } from "./UserUpdateInput";
+import { UserClinicFindManyArgs } from "../../userClinic/base/UserClinicFindManyArgs";
+import { UserClinic } from "../../userClinic/base/UserClinic";
+import { UserClinicWhereUniqueInput } from "../../userClinic/base/UserClinicWhereUniqueInput";
+import { UserRoleFindManyArgs } from "../../userRole/base/UserRoleFindManyArgs";
+import { UserRole } from "../../userRole/base/UserRole";
+import { UserRoleWhereUniqueInput } from "../../userRole/base/UserRoleWhereUniqueInput";
 
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
@@ -203,5 +209,202 @@ export class UserControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/userClinics")
+  @ApiNestedQuery(UserClinicFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "UserClinic",
+    action: "read",
+    possession: "any",
+  })
+  async findUserClinics(
+    @common.Req() request: Request,
+    @common.Param() params: UserWhereUniqueInput
+  ): Promise<UserClinic[]> {
+    const query = plainToClass(UserClinicFindManyArgs, request.query);
+    const results = await this.service.findUserClinics(params.id, {
+      ...query,
+      select: {
+        createdAt: true,
+        id: true,
+        updatedAt: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/userClinics")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async connectUserClinics(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: UserClinicWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      userClinics: {
+        connect: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/userClinics")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async updateUserClinics(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: UserClinicWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      userClinics: {
+        set: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/userClinics")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectUserClinics(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: UserClinicWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      userClinics: {
+        disconnect: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/userRoles")
+  @ApiNestedQuery(UserRoleFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "UserRole",
+    action: "read",
+    possession: "any",
+  })
+  async findUserRoles(
+    @common.Req() request: Request,
+    @common.Param() params: UserWhereUniqueInput
+  ): Promise<UserRole[]> {
+    const query = plainToClass(UserRoleFindManyArgs, request.query);
+    const results = await this.service.findUserRoles(params.id, {
+      ...query,
+      select: {
+        createdAt: true,
+        id: true,
+        name: true,
+        updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/userRoles")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async connectUserRoles(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: UserRoleWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      userRoles: {
+        connect: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/userRoles")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async updateUserRoles(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: UserRoleWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      userRoles: {
+        set: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/userRoles")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectUserRoles(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: UserRoleWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      userRoles: {
+        disconnect: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 }
