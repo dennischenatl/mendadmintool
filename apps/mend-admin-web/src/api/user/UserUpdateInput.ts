@@ -1,4 +1,6 @@
 import { InputJsonValue } from "../../types";
+import { UserClinicUpdateManyWithoutUsersInput } from "./UserClinicUpdateManyWithoutUsersInput";
+import { UserRoleUpdateManyWithoutUsersInput } from "./UserRoleUpdateManyWithoutUsersInput";
 
 export type UserUpdateInput = {
   email?: string | null;
@@ -6,5 +8,7 @@ export type UserUpdateInput = {
   lastName?: string | null;
   password?: string;
   roles?: InputJsonValue;
+  userClinics?: UserClinicUpdateManyWithoutUsersInput;
+  userRoles?: UserRoleUpdateManyWithoutUsersInput;
   username?: string;
 };

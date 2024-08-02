@@ -26,6 +26,10 @@ import { UserFindUniqueArgs } from "./UserFindUniqueArgs";
 import { CreateUserArgs } from "./CreateUserArgs";
 import { UpdateUserArgs } from "./UpdateUserArgs";
 import { DeleteUserArgs } from "./DeleteUserArgs";
+import { UserClinicFindManyArgs } from "../../userClinic/base/UserClinicFindManyArgs";
+import { UserClinic } from "../../userClinic/base/UserClinic";
+import { UserRoleFindManyArgs } from "../../userRole/base/UserRoleFindManyArgs";
+import { UserRole } from "../../userRole/base/UserRole";
 import { UserService } from "../user.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
 @graphql.Resolver(() => User)
@@ -130,5 +134,45 @@ export class UserResolverBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => [UserClinic], { name: "userClinics" })
+  @nestAccessControl.UseRoles({
+    resource: "UserClinic",
+    action: "read",
+    possession: "any",
+  })
+  async findUserClinics(
+    @graphql.Parent() parent: User,
+    @graphql.Args() args: UserClinicFindManyArgs
+  ): Promise<UserClinic[]> {
+    const results = await this.service.findUserClinics(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => [UserRole], { name: "userRoles" })
+  @nestAccessControl.UseRoles({
+    resource: "UserRole",
+    action: "read",
+    possession: "any",
+  })
+  async findUserRoles(
+    @graphql.Parent() parent: User,
+    @graphql.Args() args: UserRoleFindManyArgs
+  ): Promise<UserRole[]> {
+    const results = await this.service.findUserRoles(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
   }
 }
