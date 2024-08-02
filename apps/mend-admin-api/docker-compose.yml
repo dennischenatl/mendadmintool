@@ -11,8 +11,7 @@ services:
       BCRYPT_SALT: ${BCRYPT_SALT}
       JWT_SECRET_KEY: ${JWT_SECRET_KEY}
       JWT_EXPIRATION: ${JWT_EXPIRATION}
-      DB_URL: "`sqlserver://db:1433;database=${DB_NAME};user=${DB_USER};password=${DB\
-        _PASSWORD};TrustServerCertificate=true`"
+      DB_URL: postgres://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
     depends_on:
       - migrate
     restart: on-failure
@@ -25,37 +24,26 @@ services:
     working_dir: /app/server
     environment:
       BCRYPT_SALT: ${BCRYPT_SALT}
-      DB_URL: "`sqlserver://db:1433;database=${DB_NAME};user=${DB_USER};password=${DB\
-        _PASSWORD};TrustServerCertificate=true`"
+      DB_URL: postgres://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
     depends_on:
       db:
         condition: service_healthy
   db:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    restart: unless-stopped
+    image: postgres:12
     ports:
-      - ${DB_PORT}:1433
+      - ${DB_PORT}:5432
     environment:
-      MSSQL_SA_PASSWORD: ${DB_PASSWORD}
-      ACCEPT_EULA: Y
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres:/var/lib/postgresql/data
     healthcheck:
       test:
-        - CMD
-        - /opt/mssql-tools/bin/sqlcmd
-        - -S
-        - localhost
-        - -U
-        - ${DB_USER}
-        - -P
-        - ${DB_PASSWORD}
-        - -Q
-        - SELECT 1
-        - -b
-        - -o
-        - /dev/null
-      timeout: 5s
+        - CMD-SHELL
+        - pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}
+      timeout: 45s
       interval: 10s
       retries: 10
-      start_period: 10s
 volumes:
-  mssql: ~
+  postgres: ~
