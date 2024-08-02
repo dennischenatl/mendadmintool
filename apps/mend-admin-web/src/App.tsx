@@ -21,6 +21,10 @@ import { UserClinicList } from "./userClinic/UserClinicList";
 import { UserClinicCreate } from "./userClinic/UserClinicCreate";
 import { UserClinicEdit } from "./userClinic/UserClinicEdit";
 import { UserClinicShow } from "./userClinic/UserClinicShow";
+import { CarePlanStatusList } from "./carePlanStatus/CarePlanStatusList";
+import { CarePlanStatusCreate } from "./carePlanStatus/CarePlanStatusCreate";
+import { CarePlanStatusEdit } from "./carePlanStatus/CarePlanStatusEdit";
+import { CarePlanStatusShow } from "./carePlanStatus/CarePlanStatusShow";
 import { jwtAuthProvider } from "./auth-provider/ra-auth-jwt";
 
 const App = (): React.ReactElement => {
@@ -74,6 +78,13 @@ const App = (): React.ReactElement => {
           edit={UserClinicEdit}
           create={UserClinicCreate}
           show={UserClinicShow}
+        />
+        <Resource
+          name="CarePlanStatus"
+          list={CarePlanStatusList}
+          edit={CarePlanStatusEdit}
+          create={CarePlanStatusCreate}
+          show={CarePlanStatusShow}
         />
       </Admin>
     </div>

@@ -45,3 +45,10 @@ model UserClinic {
   updatedAt DateTime @updatedAt
   user      User[]
 }
+
+model CarePlanStatus {
+  createdAt DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  name      String?
+  updatedAt DateTime @updatedAt
+}
