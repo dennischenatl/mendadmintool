@@ -11,8 +11,7 @@ services:
       BCRYPT_SALT: ${BCRYPT_SALT}
       JWT_SECRET_KEY: ${JWT_SECRET_KEY}
       JWT_EXPIRATION: ${JWT_EXPIRATION}
-      DB_URL: "`sqlserver://db:1433;database=${DB_NAME};user=${DB_USER};password=${DB\
-        _PASSWORD};TrustServerCertificate=true`"
+      DB_URL: mysql://${DB_USER}:${DB_PASSWORD}@db:3306/${DB_NAME}
     depends_on:
       - migrate
     restart: on-failure
@@ -25,37 +24,34 @@ services:
     working_dir: /app/server
     environment:
       BCRYPT_SALT: ${BCRYPT_SALT}
-      DB_URL: "`sqlserver://db:1433;database=${DB_NAME};user=${DB_USER};password=${DB\
-        _PASSWORD};TrustServerCertificate=true`"
+      DB_URL: mysql://${DB_USER}:${DB_PASSWORD}@db:3306/${DB_NAME}
     depends_on:
       db:
         condition: service_healthy
-  db:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    restart: unless-stopped
+  adminer:
+    image: adminer
+    restart: always
     ports:
-      - ${DB_PORT}:1433
+      - 1234:8080
+  db:
+    image: mysql:8.3
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - ${DB_PORT}:3306
     environment:
-      MSSQL_SA_PASSWORD: ${DB_PASSWORD}
-      ACCEPT_EULA: Y
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     healthcheck:
       test:
         - CMD
-        - /opt/mssql-tools/bin/sqlcmd
-        - -S
+        - mysqladmin
+        - ping
+        - -h
         - localhost
-        - -U
+        - -u
         - ${DB_USER}
-        - -P
-        - ${DB_PASSWORD}
-        - -Q
-        - SELECT 1
-        - -b
-        - -o
-        - /dev/null
-      timeout: 5s
+      timeout: 45s
       interval: 10s
       retries: 10
-      start_period: 10s
 volumes:
-  mssql: ~
+  mysql: ~
