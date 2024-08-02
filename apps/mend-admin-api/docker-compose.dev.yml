@@ -1,31 +1,29 @@
 version: "3"
 services:
   db:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    restart: unless-stopped
+    image: mysql:8.3
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
     ports:
-      - ${DB_PORT}:1433
+      - ${DB_PORT}:3306
     environment:
-      MSSQL_SA_PASSWORD: ${DB_PASSWORD}
-      ACCEPT_EULA: Y
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     healthcheck:
       test:
         - CMD
-        - /opt/mssql-tools/bin/sqlcmd
-        - -S
+        - mysqladmin
+        - ping
+        - -h
         - localhost
-        - -U
+        - -u
         - ${DB_USER}
-        - -P
-        - ${DB_PASSWORD}
-        - -Q
-        - SELECT 1
-        - -b
-        - -o
-        - /dev/null
-      timeout: 5s
+      timeout: 45s
       interval: 10s
       retries: 10
-      start_period: 10s
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 1234:8080
 volumes:
-  mssql: ~
+  mysql: ~
