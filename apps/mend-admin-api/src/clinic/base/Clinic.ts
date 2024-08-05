@@ -11,8 +11,15 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsString, MaxLength, IsOptional } from "class-validator";
+import {
+  IsDate,
+  IsString,
+  MaxLength,
+  IsOptional,
+  ValidateNested,
+} from "class-validator";
 import { Type } from "class-transformer";
+import { UserClinic } from "../../userClinic/base/UserClinic";
 
 @ObjectType()
 class Clinic {
@@ -51,6 +58,15 @@ class Clinic {
   @Type(() => Date)
   @Field(() => Date)
   updatedAt!: Date;
+
+  @ApiProperty({
+    required: false,
+    type: () => [UserClinic],
+  })
+  @ValidateNested()
+  @Type(() => UserClinic)
+  @IsOptional()
+  userClinics?: Array<UserClinic>;
 }
 
 export { Clinic as Clinic };
