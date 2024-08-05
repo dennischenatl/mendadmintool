@@ -25,10 +25,6 @@ import { CarePlanStatusList } from "./carePlanStatus/CarePlanStatusList";
 import { CarePlanStatusCreate } from "./carePlanStatus/CarePlanStatusCreate";
 import { CarePlanStatusEdit } from "./carePlanStatus/CarePlanStatusEdit";
 import { CarePlanStatusShow } from "./carePlanStatus/CarePlanStatusShow";
-import { UserLoginHistoryList } from "./userLoginHistory/UserLoginHistoryList";
-import { UserLoginHistoryCreate } from "./userLoginHistory/UserLoginHistoryCreate";
-import { UserLoginHistoryEdit } from "./userLoginHistory/UserLoginHistoryEdit";
-import { UserLoginHistoryShow } from "./userLoginHistory/UserLoginHistoryShow";
 import { jwtAuthProvider } from "./auth-provider/ra-auth-jwt";
 
 const App = (): React.ReactElement => {
@@ -89,13 +85,6 @@ const App = (): React.ReactElement => {
           edit={CarePlanStatusEdit}
           create={CarePlanStatusCreate}
           show={CarePlanStatusShow}
-        />
-        <Resource
-          name="UserLoginHistory"
-          list={UserLoginHistoryList}
-          edit={UserLoginHistoryEdit}
-          create={UserLoginHistoryCreate}
-          show={UserLoginHistoryShow}
         />
       </Admin>
     </div>
