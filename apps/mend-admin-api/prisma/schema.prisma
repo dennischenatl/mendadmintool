@@ -17,7 +17,6 @@ model User {
   roles       Json
   updatedAt   DateTime     @updatedAt
   userClinics UserClinic[]
-  userRoles   UserRole[]
   username    String       @unique
 }
 
@@ -26,20 +25,16 @@ model UserRole {
   id        String   @id @default(cuid())
   name      String?
   updatedAt DateTime @updatedAt
-  user      User?    @relation(fields: [userId], references: [id])
-  userId    String?
 }
 
 model Clinic {
-  createdAt   DateTime     @default(now())
-  id          String       @id @default(cuid())
-  name        String?
-  updatedAt   DateTime     @updatedAt
-  userClinics UserClinic[]
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  name      String?
+  updatedAt DateTime @updatedAt
 }
 
 model UserClinic {
-  clinic    Clinic[]
   createdAt DateTime @default(now())
   id        String   @id @default(cuid())
   updatedAt DateTime @updatedAt

@@ -49,26 +49,12 @@ export class UserRoleControllerBase {
     @common.Body() data: UserRoleCreateInput
   ): Promise<UserRole> {
     return await this.service.createUserRole({
-      data: {
-        ...data,
-
-        user: data.user
-          ? {
-              connect: data.user,
-            }
-          : undefined,
-      },
+      data: data,
       select: {
         createdAt: true,
         id: true,
         name: true,
         updatedAt: true,
-
-        user: {
-          select: {
-            id: true,
-          },
-        },
       },
     });
   }
@@ -94,12 +80,6 @@ export class UserRoleControllerBase {
         id: true,
         name: true,
         updatedAt: true,
-
-        user: {
-          select: {
-            id: true,
-          },
-        },
       },
     });
   }
@@ -126,12 +106,6 @@ export class UserRoleControllerBase {
         id: true,
         name: true,
         updatedAt: true,
-
-        user: {
-          select: {
-            id: true,
-          },
-        },
       },
     });
     if (result === null) {
@@ -161,26 +135,12 @@ export class UserRoleControllerBase {
     try {
       return await this.service.updateUserRole({
         where: params,
-        data: {
-          ...data,
-
-          user: data.user
-            ? {
-                connect: data.user,
-              }
-            : undefined,
-        },
+        data: data,
         select: {
           createdAt: true,
           id: true,
           name: true,
           updatedAt: true,
-
-          user: {
-            select: {
-              id: true,
-            },
-          },
         },
       });
     } catch (error) {
@@ -215,12 +175,6 @@ export class UserRoleControllerBase {
           id: true,
           name: true,
           updatedAt: true,
-
-          user: {
-            select: {
-              id: true,
-            },
-          },
         },
       });
     } catch (error) {

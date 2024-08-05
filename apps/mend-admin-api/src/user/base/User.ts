@@ -23,7 +23,6 @@ import { IsJSONValue } from "../../validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { JsonValue } from "type-fest";
 import { UserClinic } from "../../userClinic/base/UserClinic";
-import { UserRole } from "../../userRole/base/UserRole";
 
 @ObjectType()
 class User {
@@ -101,15 +100,6 @@ class User {
   @Type(() => UserClinic)
   @IsOptional()
   userClinics?: Array<UserClinic>;
-
-  @ApiProperty({
-    required: false,
-    type: () => [UserRole],
-  })
-  @ValidateNested()
-  @Type(() => UserRole)
-  @IsOptional()
-  userRoles?: Array<UserRole>;
 
   @ApiProperty({
     required: true,

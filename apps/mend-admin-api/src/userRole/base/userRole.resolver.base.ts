@@ -26,7 +26,6 @@ import { UserRoleFindUniqueArgs } from "./UserRoleFindUniqueArgs";
 import { CreateUserRoleArgs } from "./CreateUserRoleArgs";
 import { UpdateUserRoleArgs } from "./UpdateUserRoleArgs";
 import { DeleteUserRoleArgs } from "./DeleteUserRoleArgs";
-import { User } from "../../user/base/User";
 import { UserRoleService } from "../userRole.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
 @graphql.Resolver(() => UserRole)
@@ -93,15 +92,7 @@ export class UserRoleResolverBase {
   ): Promise<UserRole> {
     return await this.service.createUserRole({
       ...args,
-      data: {
-        ...args.data,
-
-        user: args.data.user
-          ? {
-              connect: args.data.user,
-            }
-          : undefined,
-      },
+      data: args.data,
     });
   }
 
@@ -118,15 +109,7 @@ export class UserRoleResolverBase {
     try {
       return await this.service.updateUserRole({
         ...args,
-        data: {
-          ...args.data,
-
-          user: args.data.user
-            ? {
-                connect: args.data.user,
-              }
-            : undefined,
-        },
+        data: args.data,
       });
     } catch (error) {
       if (isRecordNotFoundError(error)) {
@@ -157,24 +140,5 @@ export class UserRoleResolverBase {
       }
       throw error;
     }
-  }
-
-  @common.UseInterceptors(AclFilterResponseInterceptor)
-  @graphql.ResolveField(() => User, {
-    nullable: true,
-    name: "user",
-  })
-  @nestAccessControl.UseRoles({
-    resource: "User",
-    action: "read",
-    possession: "any",
-  })
-  async getUser(@graphql.Parent() parent: UserRole): Promise<User | null> {
-    const result = await this.service.getUser(parent.id);
-
-    if (!result) {
-      return null;
-    }
-    return result;
   }
 }

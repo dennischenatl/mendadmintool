@@ -26,8 +26,6 @@ import { UserClinicFindUniqueArgs } from "./UserClinicFindUniqueArgs";
 import { CreateUserClinicArgs } from "./CreateUserClinicArgs";
 import { UpdateUserClinicArgs } from "./UpdateUserClinicArgs";
 import { DeleteUserClinicArgs } from "./DeleteUserClinicArgs";
-import { ClinicFindManyArgs } from "../../clinic/base/ClinicFindManyArgs";
-import { Clinic } from "../../clinic/base/Clinic";
 import { UserFindManyArgs } from "../../user/base/UserFindManyArgs";
 import { User } from "../../user/base/User";
 import { UserClinicService } from "../userClinic.service";
@@ -144,26 +142,6 @@ export class UserClinicResolverBase {
       }
       throw error;
     }
-  }
-
-  @common.UseInterceptors(AclFilterResponseInterceptor)
-  @graphql.ResolveField(() => [Clinic], { name: "clinic" })
-  @nestAccessControl.UseRoles({
-    resource: "Clinic",
-    action: "read",
-    possession: "any",
-  })
-  async findClinic(
-    @graphql.Parent() parent: UserClinic,
-    @graphql.Args() args: ClinicFindManyArgs
-  ): Promise<Clinic[]> {
-    const results = await this.service.findClinic(parent.id, args);
-
-    if (!results) {
-      return [];
-    }
-
-    return results;
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
