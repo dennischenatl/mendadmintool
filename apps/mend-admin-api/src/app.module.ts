@@ -4,7 +4,6 @@ import { UserRoleModule } from "./userRole/userRole.module";
 import { ClinicModule } from "./clinic/clinic.module";
 import { UserClinicModule } from "./userClinic/userClinic.module";
 import { CarePlanStatusModule } from "./carePlanStatus/carePlanStatus.module";
-import { UserLoginHistoryModule } from "./userLoginHistory/userLoginHistory.module";
 import { HealthModule } from "./health/health.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { SecretsManagerModule } from "./providers/secrets/secretsManager.module";
@@ -27,7 +26,6 @@ import { AuthModule } from "./auth/auth.module";
     ClinicModule,
     UserClinicModule,
     CarePlanStatusModule,
-    UserLoginHistoryModule,
     HealthModule,
     PrismaModule,
     SecretsManagerModule,
