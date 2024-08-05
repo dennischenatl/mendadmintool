@@ -11,25 +11,12 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { ClinicUpdateManyWithoutUserClinicsInput } from "./ClinicUpdateManyWithoutUserClinicsInput";
+import { UserUpdateManyWithoutUserClinicsInput } from "./UserUpdateManyWithoutUserClinicsInput";
 import { ValidateNested, IsOptional } from "class-validator";
 import { Type } from "class-transformer";
-import { UserUpdateManyWithoutUserClinicsInput } from "./UserUpdateManyWithoutUserClinicsInput";
 
 @InputType()
 class UserClinicUpdateInput {
-  @ApiProperty({
-    required: false,
-    type: () => ClinicUpdateManyWithoutUserClinicsInput,
-  })
-  @ValidateNested()
-  @Type(() => ClinicUpdateManyWithoutUserClinicsInput)
-  @IsOptional()
-  @Field(() => ClinicUpdateManyWithoutUserClinicsInput, {
-    nullable: true,
-  })
-  clinic?: ClinicUpdateManyWithoutUserClinicsInput;
-
   @ApiProperty({
     required: false,
     type: () => UserUpdateManyWithoutUserClinicsInput,

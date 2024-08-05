@@ -26,9 +26,6 @@ import { Clinic } from "./Clinic";
 import { ClinicFindManyArgs } from "./ClinicFindManyArgs";
 import { ClinicWhereUniqueInput } from "./ClinicWhereUniqueInput";
 import { ClinicUpdateInput } from "./ClinicUpdateInput";
-import { UserClinicFindManyArgs } from "../../userClinic/base/UserClinicFindManyArgs";
-import { UserClinic } from "../../userClinic/base/UserClinic";
-import { UserClinicWhereUniqueInput } from "../../userClinic/base/UserClinicWhereUniqueInput";
 
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
@@ -186,100 +183,5 @@ export class ClinicControllerBase {
       }
       throw error;
     }
-  }
-
-  @common.UseInterceptors(AclFilterResponseInterceptor)
-  @common.Get("/:id/userClinics")
-  @ApiNestedQuery(UserClinicFindManyArgs)
-  @nestAccessControl.UseRoles({
-    resource: "UserClinic",
-    action: "read",
-    possession: "any",
-  })
-  async findUserClinics(
-    @common.Req() request: Request,
-    @common.Param() params: ClinicWhereUniqueInput
-  ): Promise<UserClinic[]> {
-    const query = plainToClass(UserClinicFindManyArgs, request.query);
-    const results = await this.service.findUserClinics(params.id, {
-      ...query,
-      select: {
-        createdAt: true,
-        id: true,
-        updatedAt: true,
-      },
-    });
-    if (results === null) {
-      throw new errors.NotFoundException(
-        `No resource was found for ${JSON.stringify(params)}`
-      );
-    }
-    return results;
-  }
-
-  @common.Post("/:id/userClinics")
-  @nestAccessControl.UseRoles({
-    resource: "Clinic",
-    action: "update",
-    possession: "any",
-  })
-  async connectUserClinics(
-    @common.Param() params: ClinicWhereUniqueInput,
-    @common.Body() body: UserClinicWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      userClinics: {
-        connect: body,
-      },
-    };
-    await this.service.updateClinic({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.Patch("/:id/userClinics")
-  @nestAccessControl.UseRoles({
-    resource: "Clinic",
-    action: "update",
-    possession: "any",
-  })
-  async updateUserClinics(
-    @common.Param() params: ClinicWhereUniqueInput,
-    @common.Body() body: UserClinicWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      userClinics: {
-        set: body,
-      },
-    };
-    await this.service.updateClinic({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.Delete("/:id/userClinics")
-  @nestAccessControl.UseRoles({
-    resource: "Clinic",
-    action: "update",
-    possession: "any",
-  })
-  async disconnectUserClinics(
-    @common.Param() params: ClinicWhereUniqueInput,
-    @common.Body() body: UserClinicWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      userClinics: {
-        disconnect: body,
-      },
-    };
-    await this.service.updateClinic({
-      where: params,
-      data,
-      select: { id: true },
-    });
   }
 }

@@ -13,9 +13,8 @@ import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { StringFilter } from "../../util/StringFilter";
 import { Type } from "class-transformer";
-import { IsOptional, ValidateNested } from "class-validator";
+import { IsOptional } from "class-validator";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
-import { UserClinicListRelationFilter } from "../../userClinic/base/UserClinicListRelationFilter";
 
 @InputType()
 class ClinicWhereInput {
@@ -40,18 +39,6 @@ class ClinicWhereInput {
     nullable: true,
   })
   name?: StringNullableFilter;
-
-  @ApiProperty({
-    required: false,
-    type: () => UserClinicListRelationFilter,
-  })
-  @ValidateNested()
-  @Type(() => UserClinicListRelationFilter)
-  @IsOptional()
-  @Field(() => UserClinicListRelationFilter, {
-    nullable: true,
-  })
-  userClinics?: UserClinicListRelationFilter;
 }
 
 export { ClinicWhereInput as ClinicWhereInput };

@@ -22,7 +22,6 @@ import { GraphQLJSON } from "graphql-type-json";
 import { InputJsonValue } from "../../types";
 import { UserClinicCreateNestedManyWithoutUsersInput } from "./UserClinicCreateNestedManyWithoutUsersInput";
 import { Type } from "class-transformer";
-import { UserRoleCreateNestedManyWithoutUsersInput } from "./UserRoleCreateNestedManyWithoutUsersInput";
 
 @InputType()
 class UserCreateInput {
@@ -87,18 +86,6 @@ class UserCreateInput {
     nullable: true,
   })
   userClinics?: UserClinicCreateNestedManyWithoutUsersInput;
-
-  @ApiProperty({
-    required: false,
-    type: () => UserRoleCreateNestedManyWithoutUsersInput,
-  })
-  @ValidateNested()
-  @Type(() => UserRoleCreateNestedManyWithoutUsersInput)
-  @IsOptional()
-  @Field(() => UserRoleCreateNestedManyWithoutUsersInput, {
-    nullable: true,
-  })
-  userRoles?: UserRoleCreateNestedManyWithoutUsersInput;
 
   @ApiProperty({
     required: true,
