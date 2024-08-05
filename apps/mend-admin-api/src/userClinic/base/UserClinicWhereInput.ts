@@ -11,13 +11,26 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { StringFilter } from "../../util/StringFilter";
+import { ClinicListRelationFilter } from "../../clinic/base/ClinicListRelationFilter";
+import { ValidateNested, IsOptional } from "class-validator";
 import { Type } from "class-transformer";
-import { IsOptional, ValidateNested } from "class-validator";
+import { StringFilter } from "../../util/StringFilter";
 import { UserListRelationFilter } from "../../user/base/UserListRelationFilter";
 
 @InputType()
 class UserClinicWhereInput {
+  @ApiProperty({
+    required: false,
+    type: () => ClinicListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => ClinicListRelationFilter)
+  @IsOptional()
+  @Field(() => ClinicListRelationFilter, {
+    nullable: true,
+  })
+  clinic?: ClinicListRelationFilter;
+
   @ApiProperty({
     required: false,
     type: StringFilter,

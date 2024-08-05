@@ -11,7 +11,14 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, MaxLength, IsOptional } from "class-validator";
+import {
+  IsString,
+  MaxLength,
+  IsOptional,
+  ValidateNested,
+} from "class-validator";
+import { UserClinicCreateNestedManyWithoutClinicsInput } from "./UserClinicCreateNestedManyWithoutClinicsInput";
+import { Type } from "class-transformer";
 
 @InputType()
 class ClinicCreateInput {
@@ -26,6 +33,18 @@ class ClinicCreateInput {
     nullable: true,
   })
   name?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => UserClinicCreateNestedManyWithoutClinicsInput,
+  })
+  @ValidateNested()
+  @Type(() => UserClinicCreateNestedManyWithoutClinicsInput)
+  @IsOptional()
+  @Field(() => UserClinicCreateNestedManyWithoutClinicsInput, {
+    nullable: true,
+  })
+  userClinics?: UserClinicCreateNestedManyWithoutClinicsInput;
 }
 
 export { ClinicCreateInput as ClinicCreateInput };
