@@ -52,3 +52,11 @@ model CarePlanStatus {
   name      String?
   updatedAt DateTime @updatedAt
 }
+
+model UserLoginHistory {
+  actions   Json?
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+  user      String?
+}
